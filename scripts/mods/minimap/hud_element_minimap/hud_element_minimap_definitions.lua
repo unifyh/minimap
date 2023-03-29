@@ -76,80 +76,101 @@ local widget_definitions = {
 	}, "minimap"),
 }
 
-local icon_definitions = {
-	unknown = UIWidget.create_definition({
-        {
-            pass_type = "texture",
-			value = "content/ui/materials/backgrounds/default_square",
-            style_id = "icon",
-            style = {
-                vertical_alignment = "center",
-				horizontal_alignment = "center",
-                offset = { 0, 0, 0 },
-                size = minimap_settings.icon_size,
-                color = UIHudSettings.color_tint_main_1
-            }
-        },
-    }, "minimap"),
-	attention = UIWidget.create_definition({
-        {
-            pass_type = "texture_uv",
-			value = "content/ui/materials/hud/interactions/icons/attention",
-            style_id = "icon",
-            style = {
-				uvs = {
-					{ 0.1, 0.1 },
-					{ 0.9, 0.9 }
-				},
-                vertical_alignment = "center",
-				horizontal_alignment = "center",
-                offset = { 0, 0, 0 },
-                size = minimap_settings.icon_size,
-                color = Color.ui_hud_green_super_light(255, true)
-            }
-        },
-    }, "minimap"),
-	ping = UIWidget.create_definition({
-        {
-            pass_type = "texture_uv",
-			value = "content/ui/materials/hud/interactions/icons/location",
-            style_id = "icon",
-            style = {
-				uvs = {
-					{ 0.1, 0.1 },
-					{ 0.9, 0.9 }
-				},
-                vertical_alignment = "center",
-				horizontal_alignment = "center",
-                offset = { 0, 0, 0 },
-                size = minimap_settings.icon_size,
-                color = Color.ui_hud_green_super_light(255, true)
-            }
-        },
-    }, "minimap"),
-	threat = UIWidget.create_definition({
-        {
-            pass_type = "texture_uv",
-			value = "content/ui/materials/hud/interactions/icons/enemy",
-            style_id = "icon",
-            style = {
-				uvs = {
-					{ 0.1, 0.1 },
-					{ 0.9, 0.9 }
-				},
-                vertical_alignment = "center",
-				horizontal_alignment = "center",
-                offset = { 0, 0, 0 },
-                size = minimap_settings.icon_size,
-                color = Color.ui_hud_red_light(255, true)
-            }
-        },
-    }, "minimap"),
+local function default_update_function(widget, marker, x, y)
+	local icon = widget.style.icon
+	icon.offset[1] = x
+	icon.offset[2] = y
+end
+
+local icon_templates = {
+	unknown = {
+		definition = UIWidget.create_definition({
+			{
+				pass_type = "texture",
+				value = "content/ui/materials/backgrounds/default_square",
+				style_id = "icon",
+				style = {
+					vertical_alignment = "center",
+					horizontal_alignment = "center",
+					offset = { 0, 0, 0 },
+					size = minimap_settings.icon_size,
+					color = UIHudSettings.color_tint_main_1
+				}
+			},
+		}, "minimap"),
+		update_function = default_update_function
+	},
+
+	attention = {
+		definition = UIWidget.create_definition({
+			{
+				pass_type = "texture_uv",
+				value = "content/ui/materials/hud/interactions/icons/attention",
+				style_id = "icon",
+				style = {
+					uvs = {
+						{ 0.1, 0.1 },
+						{ 0.9, 0.9 }
+					},
+					vertical_alignment = "center",
+					horizontal_alignment = "center",
+					offset = { 0, 0, 0 },
+					size = minimap_settings.icon_size,
+					color = Color.ui_hud_green_super_light(255, true)
+				}
+			},
+		}, "minimap"),
+		update_function = default_update_function
+	},
+
+	ping = {
+		definition = UIWidget.create_definition({
+			{
+				pass_type = "texture_uv",
+				value = "content/ui/materials/hud/interactions/icons/location",
+				style_id = "icon",
+				style = {
+					uvs = {
+						{ 0.1, 0.1 },
+						{ 0.9, 0.9 }
+					},
+					vertical_alignment = "center",
+					horizontal_alignment = "center",
+					offset = { 0, 0, 0 },
+					size = minimap_settings.icon_size,
+					color = Color.ui_hud_green_super_light(255, true)
+				}
+			},
+		}, "minimap"),
+		update_function = default_update_function
+	},
+
+	threat = {
+		definition = UIWidget.create_definition({
+			{
+				pass_type = "texture_uv",
+				value = "content/ui/materials/hud/interactions/icons/enemy",
+				style_id = "icon",
+				style = {
+					uvs = {
+						{ 0.1, 0.1 },
+						{ 0.9, 0.9 }
+					},
+					vertical_alignment = "center",
+					horizontal_alignment = "center",
+					offset = { 0, 0, 0 },
+					size = minimap_settings.icon_size,
+					color = Color.ui_hud_red_light(255, true)
+				}
+			},
+		}, "minimap"),
+		update_function = default_update_function
+	}
 }
 
 return {
 	widget_definitions = widget_definitions,
 	scenegraph_definition = scenegraph_definition,
-	icon_definitions = icon_definitions,
+	icon_templates = icon_templates,
 	settings = minimap_settings,
 }

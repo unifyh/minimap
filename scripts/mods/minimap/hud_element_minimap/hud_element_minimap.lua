@@ -15,10 +15,12 @@ HudElementMinimap.init = function(self, parent, draw_layer, start_scale)
 
     self._settings = definitions.settings
 
+    local templates = definitions.icon_templates
     self._icon_widgets_by_name = {}
-    local icon_definitions = definitions.icon_definitions
-    for name, def in pairs(icon_definitions) do
-        self._icon_widgets_by_name[name] = UIWidget.init(name, def)
+    self._icon_update_functions_by_name = {}
+    for name, template in pairs(templates) do
+        self._icon_widgets_by_name[name] = UIWidget.init(name, template.definition)
+        self._icon_update_functions_by_name[name] = template.update_function
     end
 
     self._registered_world_markers = false
@@ -43,7 +45,7 @@ HudElementMinimap.update = function(self, dt, t, ui_renderer, render_settings, i
 	end
 end
 
-local markers = {}
+local markers_data = {}
 
 local ignore_marker = {
     interaction = true,
@@ -52,7 +54,7 @@ local ignore_marker = {
 }
 
 HudElementMinimap._collect_markers = function(self)
-    table.clear(markers)
+    table.clear(markers_data)
 
     local world_markers_list = self._world_markers_list
     for i = 1, #world_markers_list do
@@ -63,7 +65,7 @@ HudElementMinimap._collect_markers = function(self)
             goto continue
         end
         local azimuth, range = self:_get_marker_azimuth_range(marker)
-        markers[#markers+1] = {
+        markers_data[#markers_data+1] = {
             azimuth = azimuth,
             range = range,
             name = template_name,
@@ -72,7 +74,7 @@ HudElementMinimap._collect_markers = function(self)
         ::continue::
     end
 
-    return markers
+    return markers_data
 end
 
 HudElementMinimap._get_marker_azimuth_range = function (self, marker)
@@ -144,17 +146,22 @@ HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_render
 
 	HudElementMinimap.super._draw_widgets(self, dt, t, input_service, ui_renderer)
 
-    local markers = self:_collect_markers()
-    for _, marker in ipairs(markers) do
-        local icon_name = marker_name_to_icon[marker.name] or "unknown"
+    local markers_data = self:_collect_markers()
+    for _, marker_datum in ipairs(markers_data) do
+        local icon_name = marker_name_to_icon[marker_datum.name] or "unknown"
+
         local widget = self._icon_widgets_by_name[icon_name]
-        local icon = widget.style.icon
-        local radius = marker.range / self._settings.max_range * self._settings.radius
+
+        local radius = marker_datum.range / self._settings.max_range * self._settings.radius
         if radius > self._settings.radius then
             radius = self._settings.out_of_range_radius
         end
-        icon.offset[1] = radius * -math.sin(marker.azimuth)
-        icon.offset[2] = radius * -math.cos(marker.azimuth)
+        local x = radius * -math.sin(marker_datum.azimuth)
+        local y = radius * -math.cos(marker_datum.azimuth)
+
+        local update_function = self._icon_update_functions_by_name[icon_name]
+        update_function(widget, marker_datum.marker, x, y)
+
         UIWidget.draw(widget, ui_renderer)
     end
 
