@@ -113,9 +113,14 @@ local marker_name_to_icon = {
     location_ping = "ping",
     location_threat = "threat",
     unit_threat = "threat",
+    nameplate = "player", -- in hub
+    nameplate_party = "teammate", -- in mission
+    objective = "objective",
+    player_assistance = "assistance",
 }
 
 HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_renderer)
+    -- debug
     if mod.mn then
         mod.mn = false
         local world_markers_list = self._world_markers_list
