@@ -15,11 +15,12 @@ HudElementMinimap.init = function(self, parent, draw_layer, start_scale)
 
     self._settings = definitions.settings
 
-    local templates = definitions.icon_templates
     self._icon_widgets_by_name = {}
     self._icon_update_functions_by_name = {}
+    local templates = definitions.icon_templates
     for name, template in pairs(templates) do
-        self._icon_widgets_by_name[name] = UIWidget.init(name, template.definition)
+        local definition = template.create_widget_definition(self._settings, "minimap")
+        self._icon_widgets_by_name[name] = UIWidget.init(name, definition)
         self._icon_update_functions_by_name[name] = template.update_function
     end
 
