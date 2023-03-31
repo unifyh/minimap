@@ -419,7 +419,33 @@ local icon_templates = {
 			frame.offset[1] = x
 			frame.offset[2] = y
 		end
-	}
+	},
+
+	enemy = {
+		definition = UIWidget.create_definition({
+			{
+				pass_type = "texture_uv",
+				value = "content/ui/materials/hud/interactions/icons/default",
+				style_id = "icon",
+				style = {
+					uvs = {
+						{ 0.1, 0.1 },
+						{ 0.9, 0.9 }
+					},
+					vertical_alignment = "center",
+					horizontal_alignment = "center",
+					offset = { 0, 0, 0 },
+					size = minimap_settings.icon_size,
+					color = Color.dark_red(255, true)
+				}
+			},
+		}, "minimap"),
+		update_function = function(widget, marker, x, y)
+			default_update_function(widget, marker, x, y)
+			widget.alpha_multiplier = marker.widget.alpha_multiplier -- LoS fading
+			widget.style.icon.visible = marker.draw and not not HEALTH_ALIVE[marker.unit]
+		end
+	},
 }
 
 return {

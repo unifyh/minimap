@@ -47,12 +47,6 @@ end
 
 local markers_data = {}
 
-local ignore_marker = {
-    interaction = true,
-    damage_indicator = true,
-    health_bar = true,
-}
-
 HudElementMinimap._collect_markers = function(self)
     table.clear(markers_data)
 
@@ -61,9 +55,6 @@ HudElementMinimap._collect_markers = function(self)
         local marker = world_markers_list[i]
         local template = marker.template
         local template_name = template.name
-        if ignore_marker[template_name] then
-            goto continue
-        end
         local azimuth, range = self:_get_marker_azimuth_range(marker)
         markers_data[#markers_data+1] = {
             azimuth = azimuth,
@@ -71,7 +62,6 @@ HudElementMinimap._collect_markers = function(self)
             name = template_name,
             marker = marker,
         }
-        ::continue::
     end
 
     return markers_data
@@ -117,6 +107,10 @@ local marker_name_to_icon = {
     nameplate_party = "teammate", -- in mission
     objective = "objective",
     player_assistance = "assistance",
+    damage_indicator = "enemy",
+
+    interaction = "none",
+    health_bar = "none",
 }
 
 HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_renderer)
@@ -130,7 +124,7 @@ HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_render
             local marker = world_markers_list[i]
             local template = marker.template
             local template_name = template.name
-            if ignore_marker[template_name] then
+            if marker_name_to_icon[template_name] == "none" then
                 goto continue
             end
             str = str .. template_name .. " "
@@ -155,6 +149,10 @@ HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_render
     for _, marker_datum in ipairs(markers_data) do
         local icon_name = marker_name_to_icon[marker_datum.name] or "unknown"
 
+        if icon_name == "none" then
+            goto continue
+        end
+
         local widget = self._icon_widgets_by_name[icon_name]
 
         local radius = marker_datum.range / self._settings.max_range * self._settings.radius
@@ -168,6 +166,7 @@ HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_render
         update_function(widget, marker_datum.marker, x, y)
 
         UIWidget.draw(widget, ui_renderer)
+        ::continue::
     end
 
 end
