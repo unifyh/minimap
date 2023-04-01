@@ -52,17 +52,19 @@ HudElementMinimap._collect_markers = function(self)
     table.clear(markers_data)
 
     local world_markers_list = self._world_markers_list
-    for i = 1, #world_markers_list do
-        local marker = world_markers_list[i]
-        local template = marker.template
-        local template_name = template.name
-        local azimuth, range = self:_get_marker_azimuth_range(marker)
-        markers_data[#markers_data+1] = {
-            azimuth = azimuth,
-            range = range,
-            name = template_name,
-            marker = marker,
-        }
+    if world_markers_list then
+        for i = 1, #world_markers_list do
+            local marker = world_markers_list[i]
+            local template = marker.template
+            local template_name = template.name
+            local azimuth, range = self:_get_marker_azimuth_range(marker)
+            markers_data[#markers_data+1] = {
+                azimuth = azimuth,
+                range = range,
+                name = template_name,
+                marker = marker,
+            }
+        end
     end
 
     return markers_data
