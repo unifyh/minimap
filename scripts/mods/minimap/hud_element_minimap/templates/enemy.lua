@@ -24,13 +24,29 @@ template.create_widget_definition = function(settings, scenegraph_id)
     }, scenegraph_id)
 end
 
-template.update_function = function(widget, marker, x, y)
-    local icon = widget.style.icon
-	icon.offset[1] = x
-	icon.offset[2] = y
-    
+local function show_all(widget, marker, x, y)
+    return
+end
+
+local function show_when_healthbar_visible(widget, marker, x, y)
     widget.alpha_multiplier = marker.widget.alpha_multiplier -- LoS fading
     widget.style.icon.visible = marker.draw and not not HEALTH_ALIVE[marker.unit]
+end
+
+local function show_damaged(widget, marker, x, y)
+    local unit = marker.unit
+    local is_alive = not not HEALTH_ALIVE[unit]
+    local health_extension = ScriptUnit.has_extension(unit, "health_system")
+    local taken_damage = health_extension and (health_extension:total_damage_taken() > 0) or false
+    widget.style.icon.visible = is_alive and taken_damage
+end
+
+template.update_function = function(widget, marker, x, y)
+    local icon = widget.style.icon
+    icon.offset[1] = x
+    icon.offset[2] = y
+    
+    show_damaged(widget, marker, x, y)
 end
 
 return template
