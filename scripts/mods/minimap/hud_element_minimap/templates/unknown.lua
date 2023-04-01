@@ -22,8 +22,8 @@ end
 
 template.update_function = function(widget, marker, x, y)
     local icon = widget.style.icon
-	icon.offset[1] = x
-	icon.offset[2] = y
+    icon.offset[1] = x
+    icon.offset[2] = y
 end
 
 return template

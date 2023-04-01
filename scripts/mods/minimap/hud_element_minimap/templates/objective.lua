@@ -5,29 +5,29 @@ local template = {}
 
 local demolition_center_distance = 6
 local demolition_marker_size = {
-	12,
-	6
+    12,
+    6
 }
 local demolition_marker_style = {
-	vertical_alignment = "center",
-	horizontal_alignment = "center",
-	angle = 0,
-	offset = {
-		demolition_center_distance,
-		0,
-		1
-	},
-	default_offset = {
-		demolition_center_distance,
-		0,
-		1
-	},
-	size = demolition_marker_size,
-	pivot = {
-		demolition_marker_size[1] * 0.5 - demolition_center_distance,
-		demolition_marker_size[2] * 0.5
-	},
-	color = Color.ui_terminal(255, true)
+    vertical_alignment = "center",
+    horizontal_alignment = "center",
+    angle = 0,
+    offset = {
+        demolition_center_distance,
+        0,
+        1
+    },
+    default_offset = {
+        demolition_center_distance,
+        0,
+        1
+    },
+    size = demolition_marker_size,
+    pivot = {
+        demolition_marker_size[1] * 0.5 - demolition_center_distance,
+        demolition_marker_size[2] * 0.5
+    },
+    color = Color.ui_terminal(255, true)
 }
 
 template.create_widget_definition = function(settings, scenegraph_id)

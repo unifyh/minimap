@@ -28,22 +28,22 @@ HudElementMinimap.init = function(self, parent, draw_layer, start_scale)
 end
 
 HudElementMinimap._register_world_markers = function(self)
-	self._registered_world_markers = true
-	local cb = callback(self, "_cb_register_world_markers_list")
+    self._registered_world_markers = true
+    local cb = callback(self, "_cb_register_world_markers_list")
 
-	Managers.event:trigger("request_world_markers_list", cb)
+    Managers.event:trigger("request_world_markers_list", cb)
 end
 
 HudElementMinimap._cb_register_world_markers_list = function(self, world_markers)
-	self._world_markers_list = world_markers
+    self._world_markers_list = world_markers
 end
 
 HudElementMinimap.update = function(self, dt, t, ui_renderer, render_settings, input_service)
     HudElementMinimap.super.update(self, dt, t, ui_renderer, render_settings, input_service)
 
     if not self._registered_world_markers then
-		self:_register_world_markers()
-	end
+        self:_register_world_markers()
+    end
 end
 
 local markers_data = {}
@@ -71,34 +71,34 @@ HudElementMinimap._collect_markers = function(self)
 end
 
 HudElementMinimap._get_marker_azimuth_range = function (self, marker)
-	local marker_position = marker.position and marker.position:unbox()
+    local marker_position = marker.position and marker.position:unbox()
 
-	if marker_position then
-		local camera = self._parent:player_camera()
+    if marker_position then
+        local camera = self._parent:player_camera()
 
-		if not camera then
-			return 0, 0
-		end
+        if not camera then
+            return 0, 0
+        end
 
-		local camera_position = ScriptCamera.position(camera)
-		local camera_forward = Quaternion.forward(ScriptCamera.rotation(camera))
-		local diff_vector = marker_position - camera_position
-		diff_vector.z = 0
+        local camera_position = ScriptCamera.position(camera)
+        local camera_forward = Quaternion.forward(ScriptCamera.rotation(camera))
+        local diff_vector = marker_position - camera_position
+        diff_vector.z = 0
         local azimuth = Vector3.flat_angle(camera_forward, diff_vector)
         local range = Vector3.length(diff_vector)
 
-		return azimuth, range
-	end
+        return azimuth, range
+    end
 
-	return 0, 0
+    return 0, 0
 end
 
 local function get_hfov(vfov)
     local width = RESOLUTION_LOOKUP.width
-	local height = RESOLUTION_LOOKUP.height
-	local aspect_ratio = width / height
-	local hfov = 2 * math.atan(math.tan(vfov / 2) * aspect_ratio)
-	return hfov
+    local height = RESOLUTION_LOOKUP.height
+    local aspect_ratio = width / height
+    local hfov = 2 * math.atan(math.tan(vfov / 2) * aspect_ratio)
+    return hfov
 end
 
 local marker_name_to_icon = {
@@ -118,23 +118,23 @@ local marker_name_to_icon = {
 
 HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_renderer)
     -- debug
-    if mod.mn then
-        mod.mn = false
-        local world_markers_list = self._world_markers_list
-        local str = ""
+    -- if mod.mn then
+    --     mod.mn = false
+    --     local world_markers_list = self._world_markers_list
+    --     local str = ""
 
-        for i = 1, #world_markers_list do
-            local marker = world_markers_list[i]
-            local template = marker.template
-            local template_name = template.name
-            if marker_name_to_icon[template_name] == "none" then
-                goto continue
-            end
-            str = str .. template_name .. " "
-            ::continue::
-        end
-        mod:echo(str)
-    end
+    --     for i = 1, #world_markers_list do
+    --         local marker = world_markers_list[i]
+    --         local template = marker.template
+    --         local template_name = template.name
+    --         if marker_name_to_icon[template_name] == "none" then
+    --             goto continue
+    --         end
+    --         str = str .. template_name .. " "
+    --         ::continue::
+    --     end
+    --     mod:echo(str)
+    -- end
 
     local local_player = Managers.player:local_player(1)
     local vfov = 1
@@ -146,7 +146,7 @@ HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_render
     fov_indicator_style.fov_left.angle = hfov / 2
     fov_indicator_style.fov_right.angle = -hfov / 2
 
-	HudElementMinimap.super._draw_widgets(self, dt, t, input_service, ui_renderer)
+    HudElementMinimap.super._draw_widgets(self, dt, t, input_service, ui_renderer)
 
     local markers_data = self:_collect_markers()
     for _, marker_datum in ipairs(markers_data) do
