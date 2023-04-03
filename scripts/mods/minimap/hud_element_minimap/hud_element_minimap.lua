@@ -111,10 +111,32 @@ local marker_name_to_icon = {
     objective = "objective",
     player_assistance = "assistance",
     damage_indicator = "enemy",
+    interaction = "interactable",
 
-    interaction = "none",
     health_bar = "none",
 }
+
+HudElementMinimap._draw_widget_by_marker = function(self, marker_info, ui_renderer)
+    local icon_name = marker_name_to_icon[marker_info.name] or "unknown"
+
+    if icon_name == "none" then
+        return
+    end
+
+    local widget = self._icon_widgets_by_name[icon_name]
+
+    local radius = marker_info.range / self._settings.max_range * self._settings.radius
+    if radius > self._settings.radius then
+        radius = self._settings.out_of_range_radius
+    end
+    local x = radius * -math.sin(marker_info.azimuth)
+    local y = radius * -math.cos(marker_info.azimuth)
+
+    local update_function = self._icon_update_functions_by_name[icon_name]
+    update_function(widget, marker_info.marker, x, y)
+
+    UIWidget.draw(widget, ui_renderer)
+end
 
 HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_renderer)
     -- debug
@@ -149,27 +171,8 @@ HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_render
     HudElementMinimap.super._draw_widgets(self, dt, t, input_service, ui_renderer)
 
     local markers_data = self:_collect_markers()
-    for _, marker_datum in ipairs(markers_data) do
-        local icon_name = marker_name_to_icon[marker_datum.name] or "unknown"
-
-        if icon_name == "none" then
-            goto continue
-        end
-
-        local widget = self._icon_widgets_by_name[icon_name]
-
-        local radius = marker_datum.range / self._settings.max_range * self._settings.radius
-        if radius > self._settings.radius then
-            radius = self._settings.out_of_range_radius
-        end
-        local x = radius * -math.sin(marker_datum.azimuth)
-        local y = radius * -math.cos(marker_datum.azimuth)
-
-        local update_function = self._icon_update_functions_by_name[icon_name]
-        update_function(widget, marker_datum.marker, x, y)
-
-        UIWidget.draw(widget, ui_renderer)
-        ::continue::
+    for _, marker_info in ipairs(markers_data) do
+        self:_draw_widget_by_marker(marker_info, ui_renderer)
     end
 
 end
