@@ -75,6 +75,7 @@ local icon_templates = {
     assistance = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/assistance"),
     attention = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/attention"),
     enemy = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/enemy"),
+    interactable = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/interactable"),
     objective = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/objective"),
     ping = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/ping"),
     player = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/player"),
