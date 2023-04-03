@@ -1,5 +1,3 @@
-local mod = get_mod("minimap")
-
 local UIWidget = require("scripts/managers/ui/ui_widget")
 local ScriptCamera = require("scripts/foundation/utilities/script_camera")
 
@@ -139,25 +137,6 @@ HudElementMinimap._draw_widget_by_marker = function(self, marker_info, ui_render
 end
 
 HudElementMinimap._draw_widgets = function(self, dt, t, input_service, ui_renderer)
-    -- debug
-    -- if mod.mn then
-    --     mod.mn = false
-    --     local world_markers_list = self._world_markers_list
-    --     local str = ""
-
-    --     for i = 1, #world_markers_list do
-    --         local marker = world_markers_list[i]
-    --         local template = marker.template
-    --         local template_name = template.name
-    --         if marker_name_to_icon[template_name] == "none" then
-    --             goto continue
-    --         end
-    --         str = str .. template_name .. " "
-    --         ::continue::
-    --     end
-    --     mod:echo(str)
-    -- end
-
     local local_player = Managers.player:local_player(1)
     local vfov = 1
     if local_player then

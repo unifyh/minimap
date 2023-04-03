@@ -1,10 +1,5 @@
 local mod = get_mod("minimap")
 
--- debug
--- mod:command("mn", "no desc", function()
---     mod.mn = true
--- end)
-
 local hud_elements = {
     {
         filename = "minimap/scripts/mods/minimap/hud_element_minimap/hud_element_minimap",
