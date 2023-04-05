@@ -1,3 +1,5 @@
+local mod = get_mod("minimap")
+
 local UIWidget = require("scripts/managers/ui/ui_widget")
 local ScriptCamera = require("scripts/foundation/utilities/script_camera")
 
@@ -114,8 +116,16 @@ local marker_name_to_icon = {
     health_bar = "none",
 }
 
-HudElementMinimap._draw_widget_by_marker = function(self, marker_info, ui_renderer)
+local function get_icon_name_from_marker_info(marker_info)
     local icon_name = marker_name_to_icon[marker_info.name] or "unknown"
+    if mod.settings["display_class_icon"] and icon_name == "player" or icon_name == "teammate" then
+        icon_name = icon_name .. "_class"
+    end
+    return icon_name
+end
+
+HudElementMinimap._draw_widget_by_marker = function(self, marker_info, ui_renderer)
+    local icon_name = get_icon_name_from_marker_info(marker_info)
 
     if icon_name == "none" then
         return

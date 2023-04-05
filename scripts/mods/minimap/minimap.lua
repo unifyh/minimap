@@ -1,5 +1,7 @@
 local mod = get_mod("minimap")
 
+mod.settings = {}
+
 local hud_elements = {
     {
         filename = "minimap/scripts/mods/minimap/hud_element_minimap/hud_element_minimap",
@@ -49,10 +51,16 @@ local function recreate_hud()
     end
 end
 
+local function collect_settings()
+    mod.settings["display_class_icon"] = mod:get("display_class_icon")
+end
+
 mod.on_all_mods_loaded = function()
+    collect_settings()
     recreate_hud()
 end
 
 mod.on_setting_changed = function()
+    collect_settings()
     recreate_hud()
 end
