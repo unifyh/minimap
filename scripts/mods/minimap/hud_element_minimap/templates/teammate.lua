@@ -19,7 +19,6 @@ template.create_widget_definition = function(settings, scenegraph_id)
                 drop_shadow = false,
                 font_type = "proxima_nova_bold",
                 font_size = 20,
-                default_font_size = 20,
                 text_color = Color.ui_hud_green_light(255, true),
                 default_text_color = Color.black(255, true),
                 size = settings.icon_size

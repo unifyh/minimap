@@ -79,7 +79,9 @@ local icon_templates = {
     objective = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/objective"),
     ping = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/ping"),
     player = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/player"),
+    player_class = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/player_class"),
     teammate = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/teammate"),
+    teammate_class = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/teammate_class"),
     threat = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/threat"),
     unknown = Mods.file.dofile("minimap/scripts/mods/minimap/hud_element_minimap/templates/unknown"),
 }
