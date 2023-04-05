@@ -9,6 +9,6 @@ return {
     },
     display_class_icon = {
         en = "Display Class Icon",
-        ["zh-en"] = "显示职业图标",
+        ["zh-cn"] = "显示职业图标",
     },
 }
