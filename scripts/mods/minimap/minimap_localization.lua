@@ -1,7 +1,7 @@
 return {
     mod_name = {
         en = "Minimap",
-        ["zh-cn"] = "小地图",",
+        ["zh-cn"] = "小地图",
         ru = "Миникарта",
     },
     mod_description = {
