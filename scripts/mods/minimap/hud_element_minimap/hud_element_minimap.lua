@@ -127,7 +127,7 @@ end
 HudElementMinimap._draw_widget_by_marker = function(self, marker_info, ui_renderer)
     local icon_name = get_icon_name_from_marker_info(marker_info)
 
-    if icon_name == "none" then
+    if icon_name == "none" or icon_name == "unknown" then
         return
     end
 
