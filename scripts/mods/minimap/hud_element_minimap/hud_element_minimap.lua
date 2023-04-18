@@ -117,6 +117,11 @@ local marker_name_to_icon = {
 }
 
 local function get_icon_name_from_marker_info(marker_info)
+    local visibility = mod.settings.icon_vis[marker_info.name]
+    if not visibility then
+        return "none"
+    end
+
     local icon_name = marker_name_to_icon[marker_info.name] or "unknown"
     if mod.settings["display_class_icon"] and icon_name == "player" or icon_name == "teammate" then
         icon_name = icon_name .. "_class"
